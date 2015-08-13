@@ -40,8 +40,8 @@ button.camera-control:hover {
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
 function capturePhoto(){
-alert('trying to capture camera pic');
-    navigator.camera.getPicture(uploadPhoto,onFail,{sourceType:1,quality:60});
+alert(navigator.camera);
+   // navigator.camera.getPicture(uploadPhoto,onFail,{sourceType:1,quality:60});
 	alert('end of capture');
 }
 	
