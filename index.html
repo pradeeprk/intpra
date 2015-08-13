@@ -61,7 +61,9 @@
  var d = new Date();
     var options = new FileUploadOptions();
     options.fileKey = "file";
+	alert( d.getTime());
     options.fileName = d.getTime()+fileURI.substr(fileURI.lastIndexOf('/') + 1);
+	alert(options.fileName );
     options.mimeType = "image/jpeg";
     options.params = {}; // if we need to send parameters to the server request
     var ft = new FileTransfer();
