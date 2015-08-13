@@ -66,6 +66,13 @@ function onFail(message) {
     alert('Failed because: ' + message);
 }
 
+function getPhoto(source) {
+      // Retrieve image file location from specified source
+      navigator.camera.getPicture(onCapturePhoto, onFail, { quality: 50,
+        destinationType: destinationType.FILE_URI,
+        sourceType: source });
+    }
+
         </script>
 </head>
 <body>
@@ -73,6 +80,8 @@ function onFail(message) {
     <!--button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
     <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
     <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br-->
+	
+	<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
     <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
     <img style="display:none;" id="largeImage" src="" />
 </body>
