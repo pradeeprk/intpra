@@ -29,7 +29,7 @@
 
       // Get image handle
       //
-     /* var smallImage = document.getElementById('smallImage');
+      var smallImage = document.getElementById('smallImage');
 
       // Unhide image elements
       //
@@ -38,7 +38,7 @@
       // Show the captured photo
       // The in-line CSS rules are used to resize the image
       //
-      smallImage.src = "data:image/jpeg;base64," + imageData;*/
+      smallImage.src = "data:image/jpeg;base64," + fileURI;
 	  
 	  var win = function (r) {
         clearCache();
@@ -58,10 +58,10 @@
             alert('Ups. Something wrong happens!');
         }
     }
- 
+ var d = new Date();
     var options = new FileUploadOptions();
     options.fileKey = "file";
-    options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+    options.fileName = d.getTime()+fileURI.substr(fileURI.lastIndexOf('/') + 1);
     options.mimeType = "image/jpeg";
     options.params = {}; // if we need to send parameters to the server request
     var ft = new FileTransfer();
@@ -126,8 +126,8 @@
     <button onclick="capturePhoto();">Capture Photo</button> <br>
     <!--button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
     <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
-    <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
-    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" /-->
+    <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br-->
+    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
     <img style="display:none;" id="largeImage" src="" />
   </body>
 </html>
