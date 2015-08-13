@@ -5,59 +5,69 @@
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
-
-        // Wait for device API libraries to load
-        //
-        document.addEventListener("deviceready", onDeviceReady, false);
-
-        // device APIs are available
-        //
-        function onDeviceReady() {
-            // Retrieve image file location from specified source
-            navigator.camera.getPicture(
-                uploadPhoto,
-                function(message) { alert('get picture failed'); },
-                {
-                    quality         : 50,
-                    destinationType : navigator.camera.DestinationType.FILE_URI,
-                    sourceType      : navigator.camera.PictureSourceType.PHOTOLIBRARY
-                }
-            );
+var pictureSource;   // picture source
+var destinationType; // sets the format of returned value
+ 
+document.addEventListener("deviceready", onDeviceReady, false);
+ 
+function onDeviceReady() {
+    pictureSource = navigator.camera.PictureSourceType;
+    destinationType = navigator.camera.DestinationType;
+}
+ 
+function clearCache() {
+    navigator.camera.cleanup();
+}
+ 
+var retries = 0;
+function onCapturePhoto(fileURI) {
+    var win = function (r) {
+        clearCache();
+        retries = 0;
+        alert('Done!');
+    }
+ 
+    var fail = function (error) {
+        if (retries == 0) {
+            retries ++
+            setTimeout(function() {
+                onCapturePhoto(fileURI)
+            }, 1000)
+        } else {
+            retries = 0;
+            clearCache();
+            alert('Ups. Something wrong happens!');
         }
-
-        function uploadPhoto(imageURI) {
-            var options = new FileUploadOptions();
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpeg";
-            options.chunkedMode =false;
-
-            var params = {};
-            params.value1 = "test";
-            params.value2 = "param";
-
-            options.params = params;
-
-            var ft = new FileTransfer();
-            ft.upload(imageURI, encodeURI("http://intellimedia.in/rjapp/"), win, fail, options);
-        }
-
-        function win(r) {
-            console.log("Code = " + r.responseCode);
-            console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
-        }
-
-        function fail(error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
-        }
+    }
+ 
+    var options = new FileUploadOptions();
+    options.fileKey = "file";
+    options.fileName = fileURI.substr(fileURI.lastIndexOf('/') + 1);
+    options.mimeType = "image/jpeg";
+    options.params = {}; // if we need to send parameters to the server request
+    var ft = new FileTransfer();
+   ft.upload(fileURI, encodeURI("http://intellimedia.in/rjapp/"), win, fail, options);
+	}
+ 
+function capturePhoto() {
+    navigator.camera.getPicture(onCapturePhoto, onFail, {
+        quality: 100,
+        destinationType: destinationType.FILE_URI
+    });
+}
+ 
+function onFail(message) {
+    alert('Failed because: ' + message);
+}
 
         </script>
 </head>
 <body>
-    <h1>Example</h1>
-    <p>Upload File</p>
+     <button onclick="capturePhoto();">Capture Photo</button> <br>
+    <!--button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
+    <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+    <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br-->
+    <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+    <img style="display:none;" id="largeImage" src="" />
 </body>
 </html>
