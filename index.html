@@ -53,6 +53,7 @@ function capturePhoto() {
     navigator.camera.getPicture(onCapturePhoto, onFail, {
         quality: 100,
         destinationType: destinationType.FILE_URI
+		,sourceType      : pictureSource.PHOTOLIBRARY
     });
 }
  
