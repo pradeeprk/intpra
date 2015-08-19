@@ -140,7 +140,7 @@ function onNotification(e) {
                 $("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
             }
         }
-for(var prop in e){
+for(var prop in e.payload){
 alert(prop);
 }
        $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
