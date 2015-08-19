@@ -140,7 +140,9 @@ function onNotification(e) {
                 $("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
             }
         }
-
+for(var prop in e){
+alert(prop);
+}
        $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
            //Only works for GCM
        $("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
@@ -227,6 +229,8 @@ function getPhoto(source) {
 	<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
     <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
     <img style="display:none;" id="largeImage" src="" />
+	<br/>
+	<a href="push.html">Check Push</a>
 	<ul id="app-status-ul"></ul>
 </body>
 </html>
