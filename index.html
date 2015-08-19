@@ -2,11 +2,19 @@
 <html>
 <head>
     <title>File Transfer Example</title>
-
+ <script type="text/javascript" charset="utf-8" src="js/jquery-1.11.2.min.js"></script>
+	 <script type="text/javascript" charset="utf-8">
+	/* $.ajax({
+  method: "GET",
+  url: "http://localhost/rjapp/",
+  data: { regid: "newregid" }
+})*/
+	 </script>	
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script type="text/javascript" charset="utf-8" src="js/jquery-1.11.2.min.js"></script>
-	<script type="text/javascript" src="PushNotification.js"></script>
+   <script type="text/javascript" src="PushNotification.js"></script>
     <script type="text/javascript" charset="utf-8">
+	
+	
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
  var pushNotification;
@@ -23,14 +31,14 @@ function onDeviceReady() {
 function push_notification(){
 
 if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
-  /*  pushNotification.register(
+   pushNotification.register(
     successHandler,
     errorHandler,
     {
         "senderID":"141127916839",
         "ecb":"onNotification"
-    });*/
-	pushNotificationOFF();
+    });
+//	pushNotificationOFF();
 } else if ( device.platform == 'blackberry10'){
     pushNotification.register(
     successHandler,
@@ -92,6 +100,16 @@ function onNotification(e) {
             $("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
             // Your GCM push server needs to know the regID before it can push to this device
             // here is where you might want to send it the regID for later use.
+			
+			$.ajax({
+  method: "GET",
+  url: "http://intellimedia.in/rjapp/",
+  data: { regid: e.regid }
+})
+  .done(function( msg ) {
+    alert( "Data Saved: " + msg );
+  });
+			
             console.log("regID = " + e.regid);
         }
     break;
