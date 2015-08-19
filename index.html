@@ -23,13 +23,14 @@ function onDeviceReady() {
 function push_notification(){
 
 if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
-    pushNotification.register(
+  /*  pushNotification.register(
     successHandler,
     errorHandler,
     {
         "senderID":"141127916839",
         "ecb":"onNotification"
-    });
+    });*/
+	pushNotificationOFF();
 } else if ( device.platform == 'blackberry10'){
     pushNotification.register(
     successHandler,
@@ -63,6 +64,20 @@ function successHandler (result) {
 
 function errorHandler (error) {
     alert('error = ' + error);
+}
+
+function pushNotificationOFF() {
+    var pushNotification = window.plugins.pushNotification;
+    pushNotification.unregister(pushNotificationOffSuccess,
+        pushNotificationOffError);
+}
+
+function pushNotificationOffSuccess() {
+    alert("Noticications are OFF");
+}
+
+function pushNotificationOffError() {
+    alert("Error turning noticications off");
 }
 
 // Android and Amazon Fire OS
