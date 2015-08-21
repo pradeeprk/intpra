@@ -25,16 +25,60 @@ function onDeviceReady() {
     pictureSource = navigator.camera.PictureSourceType;
     destinationType = navigator.camera.DestinationType;
 	pushNotification = window.plugins.pushNotification;	
+	push_notification();
 	
 }
+function get_geo(){
+//navigator.geolocation.getCurrentPosition(onSuccess);
+var geo_options = {
+enableHighAccuracy: true, 
+maximumAge        : 30000, 
+timeout           : 27000
+}; 
+alert(navigator.geolocation);
+alert(navigator.geolocation.getPosition);
+var wpid = navigator.geolocation.getPosition(geo_success, geo_error, geo_options);
+}
+
+ function geo_success(position) {
+   alert("success" + " :  " + position.coords.latitude + ",  position.coords.longitude");
+  //do_something(position.coords.latitude, position.coords.longitude);
+}
+
+function geo_error() {
+alert("Sorry, no position available.");
+}
+
+function onSuccess(position) {
+alert('i am here in geoposition');
+    var element = document.getElementById('geolocation');
+        element.innerHTML = 'Latitude: '           + position.coords.latitude              + '<br />' +
+                            'Longitude: '          + position.coords.longitude             + '<br />' +
+                            'Altitude: '           + position.coords.altitude              + '<br />' +
+                            'Accuracy: '           + position.coords.accuracy              + '<br />' +
+                            'Altitude Accuracy: '  + position.coords.altitudeAccuracy      + '<br />' +
+                            'Heading: '            + position.coords.heading               + '<br />' +
+                            'Speed: '              + position.coords.speed                 + '<br />' +
+                            'Timestamp: '          + position.timestamp                    + '<br />';
+
+};
+
+// onError Callback receives a PositionError object
+//
+function onError(error) {
+    alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+}
+
 function push_notification(){
+
 if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
    pushNotification.register(
     successHandler,
     errorHandler,
     {
-       // "senderID":"intrapp-cc6cf",
-        "senderID":"141127916839",
+        "senderID":"intrapp-cc6cf",
+        //"senderID":"141127916839",
         "ecb":"onNotification"
     });
 //	pushNotificationOFF();
@@ -62,27 +106,35 @@ if ( device.platform == 'android' || device.platform == 'Android' || device.plat
         "ecb":"onNotificationAPN"
     });
 }
+
 }
+
 function successHandler (result) {
-    alert('Push registration success: Registration id is = ' + result);
+    alert('result = ' + result);
 }
+
 function errorHandler (error) {
     alert('error = ' + error);
 }
+
 function pushNotificationOFF() {
     var pushNotification = window.plugins.pushNotification;
     pushNotification.unregister(pushNotificationOffSuccess,
         pushNotificationOffError);
 }
+
 function pushNotificationOffSuccess() {
     alert("Noticications are OFF");
 }
+
 function pushNotificationOffError() {
     alert("Error turning noticications off");
 }
+
 // Android and Amazon Fire OS
 function onNotification(e) {
     $("#app-status-ul").append('<li>EVENT -> RECEIVED:' + e.event + '</li>');
+
     switch( e.event )
     {
     case 'registered':
@@ -104,12 +156,14 @@ function onNotification(e) {
             console.log("regID = " + e.regid);
         }
     break;
+
     case 'message':
         // if this flag is set, this notification happened while we were in the foreground.
         // you might want to play a sound to get the user's attention, throw up a dialog, etc.
         if ( e.foreground )
         {
             $("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
+
             // on Android soundname is outside the payload.
             // On Amazon FireOS all custom attributes are contained within payload
             var soundfile = e.soundname || e.payload.sound;
@@ -128,16 +182,20 @@ function onNotification(e) {
                 $("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
             }
         }
+		
+		
 
        $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
            //Only works for GCM
-       //$("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
+       $("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
        //Only works on Amazon Fire OS
        $status.append('<li>MESSAGE -> TIME: ' + e.payload.timeStamp + '</li>');
     break;
+
     case 'error':
         $("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
     break;
+
     default:
         $("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
     break;
@@ -150,9 +208,11 @@ function clearCache() {
  
 var retries = 0;
 function onCapturePhoto(fileURI) {
+
 var smallImage = document.getElementById('smallImage');
 smallImage.style.display = 'block';
 smallImage.src =  fileURI;
+
     var win = function (r) {
         clearCache();
         retries = 0;
@@ -192,12 +252,14 @@ function capturePhoto() {
 function onFail(message) {
     alert('Failed because: ' + message);
 }
+
 function getPhoto(source) {
       // Retrieve image file location from specified source
       navigator.camera.getPicture(onCapturePhoto, onFail, { quality: 50,
         destinationType: destinationType.FILE_URI,
         sourceType: source });
     }
+
         </script>
 </head>
 <body>
@@ -210,9 +272,12 @@ function getPhoto(source) {
     <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
     <img style="display:none;" id="largeImage" src="" />
 	<br/>
+	<a href="#" onclick="get_geo();">Get Geo</a>
 	<br/>
-	<a href="#" onclick="push_notification();">Register this device for Push</a>
 	<br/>
+	<br/>
+	<p id="geolocation">Finding geolocation...</p>
+
 	<ul id="app-status-ul"></ul>
 </body>
 </html>
