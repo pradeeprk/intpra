@@ -31,6 +31,7 @@ function onDeviceReady() {
 function get_geo(){
 alert('in geo');
 alert(navigator.geolocation);
+alert(navigator.geolocation.getCurrentPosition);
 navigator.geolocation.getCurrentPosition(onSuccess);
 }
 
