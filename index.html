@@ -29,10 +29,24 @@ function onDeviceReady() {
 	
 }
 function get_geo(){
-alert('in geo');
+//navigator.geolocation.getCurrentPosition(onSuccess);
+var geo_options = {
+enableHighAccuracy: true, 
+maximumAge        : 30000, 
+timeout           : 27000
+}; 
 alert(navigator.geolocation);
-alert(navigator.geolocation.getCurrentPosition);
-navigator.geolocation.getCurrentPosition(onSuccess);
+alert(navigator.geolocation.getPosition);
+var wpid = navigator.geolocation.getPosition(geo_success, geo_error, geo_options);
+}
+
+ function geo_success(position) {
+   alert("success" + " :  " + position.coords.latitude + ",  position.coords.longitude");
+  //do_something(position.coords.latitude, position.coords.longitude);
+}
+
+function geo_error() {
+alert("Sorry, no position available.");
 }
 
 function onSuccess(position) {
